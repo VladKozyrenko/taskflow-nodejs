@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/VladKozyrenko/taskflow-nodejs/issues"
   },
-  "homepage": "https://github.com/VladKozyrenko/taskflow-nodejs#readme"
+  "homepage": "https://github.com/VladKozyrenko/taskflow-nodejs#readme",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
 }

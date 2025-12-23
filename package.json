@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/VladKozyrenko/taskflow-nodejs#readme",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.50.1",
@@ -33,5 +34,10 @@
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.50.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.2.0",
+    "express": "^5.2.1",
+    "prisma": "^7.2.0"
   }
 }

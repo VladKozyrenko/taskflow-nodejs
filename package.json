@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/VladKozyrenko/taskflow-nodejs#readme",
   "devDependencies": {
+    "@stryker-mutator/core": "^9.4.0",
+    "@stryker-mutator/jest-runner": "^9.4.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/supertest": "^6.0.3",

@@ -4,6 +4,7 @@
   "description": "Проєкт виконується індивідуально в рамках курсу\r «Розробка програмного забезпечення на платформі Node.js».",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node src/app.ts",
     "test": "jest",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",

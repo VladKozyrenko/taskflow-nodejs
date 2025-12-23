@@ -4,7 +4,8 @@
   "description": "Проєкт виконується індивідуально в рамках курсу\r «Розробка програмного забезпечення на платформі Node.js».",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/VladKozyrenko/taskflow-nodejs#readme",
   "devDependencies": {
+    "prettier": "^3.7.4",
     "typescript": "^5.9.3"
   }
 }

@@ -9,7 +9,8 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
     "prepare": "husky install",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",

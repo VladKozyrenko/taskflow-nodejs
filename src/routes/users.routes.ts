@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { users } from '../data/users';
+import { prisma } from '../prisma';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (_req, res) => {
+  const users = await prisma.user.findMany({
+    include: {
+      projects: true,
+    },
+  });
+
   res.json(users);
 });
 

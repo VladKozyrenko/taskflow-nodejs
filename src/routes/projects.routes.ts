@@ -14,4 +14,17 @@ router.get('/', async (_req, res) => {
   res.json(projects);
 });
 
+router.post('/', async (req, res) => {
+  const { name, ownerId } = req.body;
+
+  const project = await prisma.project.create({
+    data: {
+      name,
+      ownerId,
+    },
+  });
+
+  res.status(201).json(project);
+});
+
 export default router;

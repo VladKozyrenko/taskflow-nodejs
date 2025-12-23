@@ -4,7 +4,7 @@
   "description": "Проєкт виконується індивідуально в рамках курсу\r «Розробка програмного забезпечення на платформі Node.js».",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts"
   },
@@ -21,10 +21,13 @@
   },
   "homepage": "https://github.com/VladKozyrenko/taskflow-nodejs#readme",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.50.1",
     "eslint": "^9.39.2",
+    "jest": "^30.2.0",
     "prettier": "^3.7.4",
+    "ts-jest": "^29.4.6",
     "typescript": "^5.9.3"
   }
 }

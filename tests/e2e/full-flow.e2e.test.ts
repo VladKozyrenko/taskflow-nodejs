@@ -3,7 +3,7 @@ import app from '../../src/app';
 import { prisma } from '../../src/prisma';
 
 describe('E2E: Full task flow', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await prisma.task.deleteMany();
     await prisma.project.deleteMany();
     await prisma.user.deleteMany();

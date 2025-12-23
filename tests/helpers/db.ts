@@ -1,7 +1,7 @@
 import { prisma } from '../../src/prisma';
 
-export async function clearDatabase() {
-  await prisma.task.deleteMany();
-  await prisma.project.deleteMany();
-  await prisma.user.deleteMany();
+export async function resetDatabase() {
+  await prisma.$executeRawUnsafe(`
+    TRUNCATE TABLE "Task", "Project", "User" RESTART IDENTITY CASCADE;
+  `);
 }

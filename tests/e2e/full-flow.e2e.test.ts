@@ -1,12 +1,11 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { prisma } from '../../src/prisma';
+import { resetDatabase } from '../helpers/db';
 
 describe('E2E: Full task flow', () => {
   beforeEach(async () => {
-    await prisma.task.deleteMany();
-    await prisma.project.deleteMany();
-    await prisma.user.deleteMany();
+    await resetDatabase();
   });
 
   afterAll(async () => {
@@ -14,13 +13,11 @@ describe('E2E: Full task flow', () => {
   });
 
   test('User → Project → Task → Get tasks', async () => {
-    // 1️⃣ Create user
     const userRes = await request(app).post('/users').send({ email: 'e2e@test.com' });
 
     expect(userRes.status).toBe(201);
     const userId = userRes.body.id;
 
-    // 2️⃣ Create project
     const projectRes = await request(app).post('/projects').send({
       name: 'E2E Project',
       ownerId: userId,
@@ -29,7 +26,6 @@ describe('E2E: Full task flow', () => {
     expect(projectRes.status).toBe(201);
     const projectId = projectRes.body.id;
 
-    // 3️⃣ Create task
     const taskRes = await request(app).post('/tasks').send({
       title: 'E2E Task',
       status: 'todo',
@@ -38,7 +34,6 @@ describe('E2E: Full task flow', () => {
 
     expect(taskRes.status).toBe(201);
 
-    // 4️⃣ Get tasks
     const tasksRes = await request(app).get('/tasks');
 
     expect(tasksRes.status).toBe(200);

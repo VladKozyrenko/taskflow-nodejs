@@ -2,11 +2,19 @@ name: CD
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
-  deploy:
+  build-docker:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deployment step
-        run: echo "Application would be deployed here"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t taskflow-nodejs:latest .

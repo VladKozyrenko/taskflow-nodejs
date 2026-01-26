@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .ts",
     "prepare": "husky install",
     "seed": "ts-node src/seed.ts",
+    "build": "tsc",
     "start": "node dist/server.js"
   },
   "repository": {

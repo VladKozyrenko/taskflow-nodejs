@@ -21,21 +21,9 @@ describe('TaskService (unit)', () => {
     return { tasksRepo, projectsRepo };
   }
 
-  const mockProject: Project = {
-    id: 1,
-    name: 'Test project',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  const mockProject = { id: 1 } as Project;
 
-  const mockTask: Task = {
-    id: 1,
-    title: 'A',
-    status: 'todo',
-    projectId: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  const mockTask = { id: 1, title: 'A', status: 'todo', projectId: 1 } as Task;
 
   test('throws error when title is empty', async () => {
     const { tasksRepo, projectsRepo } = makeRepos();

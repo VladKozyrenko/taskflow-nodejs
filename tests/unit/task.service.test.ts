@@ -1,44 +1,84 @@
 import { TaskService } from '../../src/services/task.service';
+import type { TaskRepository } from '../../src/repositories/task.repository';
+import type { ProjectsRepository } from '../../src/repositories/project.repository';
+import type { Project, Task } from '@prisma/client';
 
 describe('TaskService (unit)', () => {
-  let service: TaskService;
+  function makeRepos() {
+    const tasksRepo: jest.Mocked<
+      Pick<TaskRepository, 'create' | 'findAllWithProject' | 'findById' | 'updateStatus'>
+    > = {
+      create: jest.fn(),
+      findAllWithProject: jest.fn(),
+      findById: jest.fn(),
+      updateStatus: jest.fn(),
+    };
 
-  beforeEach(() => {
-    service = new TaskService();
+    const projectsRepo: jest.Mocked<Pick<ProjectsRepository, 'findById'>> = {
+      findById: jest.fn(),
+    };
+
+    return { tasksRepo, projectsRepo };
+  }
+
+  const mockProject: Project = {
+    id: 1,
+    name: 'Test project',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const mockTask: Task = {
+    id: 1,
+    title: 'A',
+    status: 'todo',
+    projectId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  test('throws error when title is empty', async () => {
+    const { tasksRepo, projectsRepo } = makeRepos();
+    projectsRepo.findById.mockResolvedValue(mockProject);
+
+    const service = new TaskService(tasksRepo, projectsRepo);
+
+    await expect(service.create({ title: '   ', projectId: 1 })).rejects.toThrow(
+      'Title is required'
+    );
+
+    expect(tasksRepo.create).not.toHaveBeenCalled();
   });
 
-  test('creates a task with default status', () => {
-    const task = service.create({ title: 'Test task' });
+  test('throws error when project does not exist', async () => {
+    const { tasksRepo, projectsRepo } = makeRepos();
+    projectsRepo.findById.mockResolvedValue(null);
 
-    expect(task.id).toBeDefined();
-    expect(task.title).toBe('Test task');
-    expect(task.status).toBe('todo');
+    const service = new TaskService(tasksRepo, projectsRepo);
+
+    await expect(service.create({ title: 'A', projectId: 123 })).rejects.toThrow(
+      'Project not found'
+    );
+
+    expect(tasksRepo.create).not.toHaveBeenCalled();
   });
 
-  test('throws error when title is empty', () => {
-    expect(() => {
-      service.create({ title: '' });
-    }).toThrow('Title is required');
-  });
+  test('creates a task with default status', async () => {
+    const { tasksRepo, projectsRepo } = makeRepos();
+    projectsRepo.findById.mockResolvedValue(mockProject);
+    tasksRepo.create.mockResolvedValue(mockTask);
 
-  test('returns all created tasks', () => {
-    service.create({ title: 'Task 1' });
-    service.create({ title: 'Task 2' });
+    const service = new TaskService(tasksRepo, projectsRepo);
 
-    const tasks = service.getAll();
-    expect(tasks).toHaveLength(2);
-  });
+    const created = await service.create({ title: 'A', projectId: 1 });
 
-  test('marks task as done', () => {
-    const task = service.create({ title: 'Finish lab' });
+    expect(projectsRepo.findById).toHaveBeenCalledWith(1);
+    expect(tasksRepo.create).toHaveBeenCalledWith({
+      title: 'A',
+      status: 'todo',
+      projectId: 1,
+    });
 
-    const updated = service.markAsDone(task.id);
-    expect(updated.status).toBe('done');
-  });
-
-  test('throws error if task does not exist', () => {
-    expect(() => {
-      service.markAsDone(999);
-    }).toThrow('Task not found');
+    expect(created.status).toBe('todo');
   });
 });

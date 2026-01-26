@@ -1,6 +1,6 @@
 import { TaskService } from '../../src/services/task.service';
 import type { TaskRepository } from '../../src/repositories/task.repository';
-import type { ProjectsRepository } from '../../src/repositories/project.repository';
+import type { ProjectsRepository } from '../../src/repositories/projects.repository';
 import type { Project, Task } from '@prisma/client';
 
 describe('TaskService (unit)', () => {

@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    container_name: taskflow_db
+    restart: always
+    environment:
+      POSTGRES_USER: taskflow
+      POSTGRES_PASSWORD: taskflow
+      POSTGRES_DB: taskflow
+    volumes:
+      - taskflow_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    image: ghcr.io/${GITHUB_REPOSITORY:-vladkozyrenko/taskflow-nodejs}:latest
+    container_name: taskflow_app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://taskflow:taskflow@db:5432/taskflow
+    ports:
+      - "3000:3000"
+    # Якщо потрібно проганяти міграції перед стартом:
+    command: sh -c "npx prisma migrate deploy && node dist/server.js"
+
+volumes:
+  taskflow_pgdata:

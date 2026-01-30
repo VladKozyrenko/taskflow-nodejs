@@ -16,7 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # lowercase image name for GHCR
       - name: Set image name (lowercase)
         run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
@@ -30,7 +29,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -38,9 +37,8 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
-          # provide dummy DATABASE_URL only for build stage (needed for prisma generate)
           build-args: |
-            DATABASE_URL=postgresql://postgres:postgres@localhost:5432/taskflow
+            DATABASE_URL=postgresql://user:pass@localhost:5432/db
 
       - name: Deploy on server via SSH (docker compose pull + up)
         uses: appleboy/ssh-action@v1.0.3
@@ -52,7 +50,7 @@ jobs:
             set -e
             cd /opt/taskflow
 
-            # login to GHCR on server (use PAT, NOT GITHUB_TOKEN)
+            # Login to GHCR on server using PAT (must have read:packages)
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USER }}" --password-stdin
 
             docker compose -f docker-compose.prod.yml pull

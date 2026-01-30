@@ -13,7 +13,7 @@ services:
       - "5432:5432"
 
   app:
-    image: ghcr.io/${GITHUB_REPOSITORY:-vladkozyrenko/taskflow-nodejs}:latest
+    image: ghcr.io/vladkozyrenko/taskflow-nodejs:latest
     container_name: taskflow_app
     restart: always
     depends_on:

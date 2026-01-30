@@ -5,3 +5,8 @@ dist
 
 # stryker temp files
 .stryker-tmp
+
+dist/
+
+src/**/*.js
+tests/**/*.js
